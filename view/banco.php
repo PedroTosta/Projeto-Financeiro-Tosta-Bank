@@ -3,16 +3,19 @@
 
     if (!isset($_SESSION)) session_start();
     
+    //Verifico se o usuário está logado.
     if($_SESSION['login'] == false){
         header('Location: index.html');
         exit();
     }
 
+    //Verificado se o usuário possui banco ou agência.
     if($_SESSION['UsuarioBanco'] == null || $_SESSION['UsuarioAgencia'] == null){
         header('Location: associar.php');
         exit();
     }
 
+    //Caso o usuário clique no botão deslogar, finalizar a sessão.
     if(isset($_POST['btnDeslogar'])){
         session_destroy();
         header('Location: index.html');
@@ -54,9 +57,11 @@
         <div class="text-center">
             <?php 
                 try {
+                    //Pego os dados do usuário a partir do ID logado.
                     $consulta = $pdo->query("SELECT * FROM Usuarios WHERE (`id` = '".$_SESSION['UsuarioID']."');");    
                     $linhas = $consulta->rowCount();        
                     if ($linhas == 1) {
+                        //Caso encontre, pego os dados.
                         $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
                         $saldo = $resultado['saldo'];
                     }else{
@@ -76,6 +81,7 @@
                             <button type="submit" class="btn btn-outline-primary btn-lg" name="btnTransferir">Transferir</button>
                             <button type="submit" class="btn btn-outline-primary btn-lg" name="btnDepositar">Depositar</button>
                             <?php 
+                                //Caso o usuário seja nível 2 (admin) apresente botões extras.
                                 if($_SESSION['UsuarioNivel'] == 2){
                                     echo '<button type="submit" class="btn btn-outline-primary btn-lg" name="btnEditUser">Editar Usuários</button>';
                                     echo '<button type="submit" class="btn btn-outline-primary btn-lg" name="btnEditBanco">Editar Bancos</button>';
