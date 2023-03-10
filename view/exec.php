@@ -13,11 +13,13 @@
 
             if (!isset($_SESSION)) session_start();
             
+            //Verifico se o usuário está logado.
             if($_SESSION['login'] == false){
                 header('Location: index.html');
                 exit();
             }    
 
+            //Caso o usuário clique no botão sacar.
             if(isset($_POST['btnSacar'])){
                 try {
                     $consulta = $pdo->query("SELECT * FROM Usuarios WHERE (`id` = '".$_SESSION['UsuarioID']."');");    
@@ -124,6 +126,7 @@
                 }
             }
 
+            //Caso o usuário clique no botão transferir.
             if(isset($_POST['btnTransferir'])){
                 echo '
                     <div class="modal modal-signin position-static d-block py-2" tabindex="-1" role="dialog" id="modalSignin">
@@ -207,7 +210,7 @@
             
             }
 
-
+            //Caso o usuário clique no botão depositar.
             if(isset($_POST['btnDepositar'])){
                 echo '
                     <div id="divp" class="modal modal-signin position-static d-block py-1" tabindex="-1" role="dialog" id="modalSignin">
@@ -272,6 +275,7 @@
 
             }
 
+            //Caso o admin clique no botão editar usuários.
             if(isset($_POST['btnEditUser'])){
                 if($_SESSION['UsuarioNivel'] != 2){
                     Header('Location: banco.php');
@@ -382,7 +386,7 @@
             
             }
 
-
+            //Caso o admin clique no botão editar banco.
             if(isset($_POST['btnEditBanco'])){
                 if($_SESSION['UsuarioNivel'] != 2){
                     Header('Location: banco.php');
@@ -464,7 +468,7 @@
 
 
 
-            
+            //Caso o admin clique no botão editar agência.
             if(isset($_POST['btnEditAgencia'])){
                 if($_SESSION['UsuarioNivel'] != 2){
                     Header('Location: banco.php');
