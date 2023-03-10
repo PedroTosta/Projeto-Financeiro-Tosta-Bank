@@ -61,24 +61,29 @@
 </html>
 
 <?php
-	include_once('../controller/conexao.php');
+    include_once('../controller/conexao.php');
 
     if (!isset($_SESSION)) session_start();
     
-    if($_SESSION['login'] == true){
+    //Verifico se o usuário está logado.
+    if($_SESSION['login'] == true){ 
         header('Location: banco.php');
         exit();
     }    
 
+    //Verifico se o usuário clicou no botão login.
     if(!isset($_POST['btnLogin'])){
         exit();
     }
     
+    //Pego e-mail e a senha.
     $email = $_POST['emailNome'];
     $senha = md5($_POST['senhaNome']);
     try {
         $consulta = $pdo->query("SELECT * FROM Usuarios WHERE (`email` = '".$email ."') AND (`senha` = '".$senha ."');");    
-        $linhas = $consulta->rowCount();
+        $linhas = $consulta->rowCount();	    
+	//Verifico se com base no e-mail e senha possui algo cadastrado no banco de dados, se caso encontrar uma linha de resultado, continuar o login.
+	    
         if ($linhas == 1) {
             $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
             $_SESSION['login'] = true;
@@ -90,6 +95,7 @@
             $_SESSION['UsuarioAgencia'] = $resultado['agenciaID'];
             header('Location: banco.php');
             exit();
+	    //Pego os atributos do BD, coloco na sessão e redireciono para página principal.
         }else{
             echo '<script>
                 let btnLogin = document.getElementById("btnLoginID");
@@ -101,6 +107,7 @@
                 div.appendChild(text);                                       
                 divPai.insertBefore(div, btnLoginID.nextSibling);
                 </script>';                
+		//Caso não encontre nada no BD com as informações inseridas, informe um erro.
         }
     } catch(PDOException $e) {
         echo 'Error: ' . $e->getMessage();
