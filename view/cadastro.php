@@ -1,6 +1,7 @@
 <?php 
     if (!isset($_SESSION)) session_start();
     
+    //Caso o usuário esteja logado.
     if($_SESSION['login'] == true){
         header('Location: banco.php');
         exit();
@@ -150,15 +151,18 @@
 <?php
 	include_once('../controller/conexao.php');    
 
+    //Caso o usuário clique no botão cadastrar.
     if(!isset($_POST['btnCadastrar'])){
         exit();
     }
     
+    //Pego os dados inseridos.
     $nome = $_POST['usuarioNome'];
     $email = $_POST['emailNome'];
     $senha1 = md5($_POST['senha1Nome']);
     $senha2 = md5($_POST['senha2Nome']);
 
+    //Verificações de tamanho e igualdade.
     if(strlen($nome) >= 200){
         echo '<script>
                 let btnCadastrar = document.getElementById("btnCadastrarID");
@@ -200,6 +204,7 @@
     }
 
     try {
+	//Verificando se o e-mail já está cadastrado.
         $consulta = $pdo->query("SELECT * FROM Usuarios WHERE (`email` = '".$email ."');");    
         $linhas = $consulta->rowCount();
         if ($linhas > 0) {
@@ -219,6 +224,7 @@
         echo 'Error: ' . $e->getMessage();
     }
 
+    //Insiros as informações no banco de dados.
     try{
         $stmt = $pdo->prepare('INSERT INTO Usuarios (nome, email, senha, nivel, saldo) VALUES (:nome, :email, :senha, 1, 0)');
         $stmt->execute(array(
