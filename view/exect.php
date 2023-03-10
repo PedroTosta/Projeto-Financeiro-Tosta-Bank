@@ -13,11 +13,13 @@
 
             if (!isset($_SESSION)) session_start();
             
+            //Verifico se o usuário está logado.
             if($_SESSION['login'] == false){
                 header('Location: index.html');
                 exit();
             }    
-
+        
+            //Verifico se o usuário clicou no botão transferir.
             if(isset($_POST['btnTransferir'])){
                 $valor = $_POST['campoTransferir'];
                 $id = $_POST['UsuarioID'];
@@ -100,7 +102,7 @@
                 } 
             }
 
-
+            //Verifico se o admin clicou no botão editar usuários.
             if(isset($_POST['btnEditUserS'])){
                 try{
                     $stmt = $pdo->prepare('UPDATE Usuarios SET nome = :nome, email = :email, nivel = :nivel, bancoID = :bancoID, agenciaID = :agenciaID WHERE id = :id');
@@ -141,7 +143,7 @@
                 } 
             }
 
-
+            //Verifico se o admin clicou no botão editar banco.
             if(isset($_POST['btnEditBancoS'])){
                 try{
                     $stmt = $pdo->prepare('UPDATE Banco SET nome = :nome WHERE id = :id;');
@@ -179,7 +181,7 @@
             }
 
 
-
+            //Verifico se o admin clicou no botão editar agência.
             if(isset($_POST['btnEditAgenciaS'])){
                 try{
                     $stmt = $pdo->prepare('UPDATE Agencia SET nome = :nome, cep = :cep, bancoID = :bancoID WHERE id = :id;');
@@ -219,7 +221,7 @@
             }
 
 
-
+            //Verifico se o ID informado é igual o logado.
             if(isset($_POST['btnSelect'])){
                 $id = $_POST['UsuarioID'];            
                 if($id == $_SESSION['UsuarioID']){
@@ -290,7 +292,7 @@
 
             }
 
-
+            //Verifico se o admin clicou no botão editar usuário
             if(isset($_POST['btnEditUser'])){                
                     echo '
                 <div class="modal modal-signin position-static d-block py-1" tabindex="-1" role="dialog" id="modalSignin">
@@ -348,7 +350,7 @@
                 </div>';                                                                           
             }
 
-
+            //Verifico se o admin clicou no botão editar banco.
             if(isset($_POST['btnEditBanco'])){                
                     echo '
                 <div class="modal modal-signin position-static d-block py-1" tabindex="-1" role="dialog" id="modalSignin">
@@ -378,7 +380,7 @@
                 </div>';                                                                           
             }
 
-
+            //Verifico se o admin clicou no botão editar agência.
             if(isset($_POST['btnEditAgencia'])){                
                     echo '
                 <div class="modal modal-signin position-static d-block py-1" tabindex="-1" role="dialog" id="modalSignin">
