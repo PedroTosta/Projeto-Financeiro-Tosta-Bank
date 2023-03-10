@@ -4,11 +4,13 @@
 
     if (!isset($_SESSION)) session_start();
 
+    //Verifico se o usuário está logado.
     if($_SESSION['login'] == false){
         header('Location: index.html');
         exit();
     }   
 
+    //Verifico se o usuário possui banco ou agência.
     if($_SESSION['UsuarioBanco'] != null && $_SESSION['UsuarioAgencia'] != null){
         header('Location: banco.php');
         exit();
@@ -20,6 +22,7 @@
         exit();
     }        
 
+    //Caso o usuário escolha um banco, faço a verificação se o botão foi clicado e atualizo a base de dados com o ID do banco escolhido.
     if(isset($_POST['btnBanco'])){ 
         $id = $_POST['listGroupRadios'];
         try{
@@ -34,6 +37,7 @@
         } 
     }
 
+    //Caso o usuário escolha uma agência, faço a verificação se o botão foi clicado e atualizo a base de dados com o ID da agência escolhida.
     if(isset($_POST['btnAgencia'])){ 
         $id = $_POST['listGroupRadios'];
         try{
@@ -77,6 +81,7 @@
                                 <div class="d-flex gap-5 justify-content-center">
                                     <div class="list-group mx-0 w-auto">';
                                             try {
+                                                //Mostro todos os bancos.
                                                 $consulta = $pdo->query("SELECT * FROM Banco;");    
                                                 $linhas = $consulta->rowCount();        
                                                 if ($linhas > 0) {
@@ -104,7 +109,7 @@
                             }
                             
 
-
+                            //Caso o usuário tenha banco mas não possui agência.
                             if($_SESSION['UsuarioBanco'] != null && $_SESSION['UsuarioAgencia'] == null){
                                 try{
                                     $consulta = $pdo->query("SELECT nome FROM Banco WHERE id = ".$_SESSION['UsuarioBanco']);    
